@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas 02</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: none;
+            background-color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        // 获取画布dom
+        var canvas = document.getElementById('canvas')
+        // 得到 2d 上下文，还有 webgl 、webgl2
+        var cx = canvas.getContext('2d')
+        var w = document.documentElement.clientWidth;
+        var h = document.documentElement.clientHeight;
+        // 鼠标位置得到圆的位置
+        var round = []
+
+        canvas.width = w;
+        canvas.height = h;
+
+        // 监听鼠标滑动事件，得到鼠标经过路径，不断 push 圆到 round 里
+        window.addEventListener('mousemove', e => {
+            round.push({
+                x: e.clientX,
+                y: e.clientY,
+                r: 2
+            })
+        })
+
+        function animate() {
+            // 清除画布
+            cx.clearRect(0, 0, w, h);
+
+            for(let i = 0; i < round.length; i++) {
+                let color = 'hsl(' + Math.random() * 360 + ',100%,80%)';
+                cx.fillStyle = color
+                cx.shadowBlur = round[i].r * 2
+                cx.shadowColor = color
+                cx.beginPath()
+                cx.arc(round[i].x, round[i].y, round[i].r, 0, Math.PI * 2, true)
+                cx.closePath()
+                cx.fill()
+                round[i].r += .6;
+                if( round[i].r >= 24){
+                    round.splice(i,1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate()
+    </script>
+</body>
+
+</html>

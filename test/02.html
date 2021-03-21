@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas 02</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: none;
+            background-color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        // 获取画布dom
+        var canvas = document.getElementById('canvas')
+        // 得到 2d 上下文，还有 webgl 、webgl2
+        var cx = canvas.getContext('2d')
+        var w = document.documentElement.clientWidth;
+        var h = document.documentElement.clientHeight;
+        var round = []
+
+        canvas.width = w;
+        canvas.height = h;
+
+        class RoundItem {
+            constructor(index, x, y) {
+                this.ctx = cx
+                this.index = index
+                this.x = x
+                this.y = y
+                this.r = Math.random() * 2 + 1
+                var alpha = (Math.floor(Math.random() * 10) + 1) / 10 / 2;
+                this.color = "rgba(255,255,255," + alpha + ")";
+                let s = [.05, .1, .15, .2]
+                this.s = s[Math.floor(Math.random() * 3)]
+            }
+            draw() {
+                let shadowBlurs = ['gold', 'blue', 'red', 'green']
+                this.ctx.fillStyle = this.color
+                this.ctx.shadowBlur = this.r * 2
+                // this.ctx.shadowColor = shadowBlurs[Math.floor(Math.random() * 3)]
+                this.ctx.shadowColor = '#00f'
+                this.ctx.beginPath()
+                this.ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false)
+                this.ctx.closePath()
+                this.ctx.fill()
+            }
+            move() {
+                this.y -= this.s
+                // this.y -= 0.15
+                if (this.y <= -10) {
+                    this.y = h + 10;
+                }
+                this.draw();
+            }
+        }
+
+        function init(initRoundPopulation) {
+            for (let i = 0; i < initRoundPopulation; i++) {
+                round[i] = new RoundItem(i, Math.random() * w, Math.random() * h)
+                round[i].draw()
+            }
+            animate()
+        }
+        function animate() {
+            cx.clearRect(0, 0, w, h);
+
+            for (var i in round) {
+                round[i].move();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        init(80)
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas 01</title>
+    <style>
+        #canvas {
+            background-color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        // 获取画布dom
+        var canvas = document.getElementById('canvas')
+        // 得到 2d 上下文，还有 webgl 、webgl2
+        var context = canvas.getContext('2d')
+
+        canvas.width = 400;
+        canvas.height = 400;
+        // canvas.style.width = '400px'
+        // canvas.style.height = '400px'
+
+        // 起始一条路径，或重置当前路径
+        context.beginPath();
+        // 创建弧/曲线
+        context.arc(100, 100, 1, 0, Math.PI * 2, true)
+        // 创建从当前点回到起始点的路径
+        context.closePath();
+        // 设置或返回用于填充绘画的颜色、渐变或模式
+        context.fillStyle = 'rgba(222, 100,222)'
+        // 填充当前绘图（路径）
+        context.fill()
+
+        context.beginPath();
+        context.moveTo(120, 120)
+        context.lineTo(140, 180);
+        context.lineTo(240, 180);
+        context.lineCap = 'round'
+        context.lineWidth = 20
+        context.strokeStyle = '#fff';
+        context.stroke();
+        context.closePath()
+
+        context.beginPath()
+        var grd = context.createLinearGradient(100, 100, 100, 200);
+        grd.addColorStop(0, '#e66465');
+        grd.addColorStop(1, '#9198e5');
+        context.fillStyle = 'linear-gradient(#e66465, #9198e5);'
+        context.fillStyle = grd
+        context.fillRect(150, 150, 100, 100)
+        context.strokeStyle = '#fff';
+        context.lineWidth = 1
+        context.strokeRect(130, 10, 100, 100);
+        context.closePath()
+
+        context.beginPath();
+        context.arc(100, 100, 50, 0, 2 * Math.PI, false);
+        context.fillStyle = '#fff';
+        context.shadowBlur = 20;
+        context.shadowColor = '#fff';
+        context.fill()
+
+        var grd = context.createLinearGradient(20, 20, 0, 400);
+        grd.addColorStop(0, 'rgb(255, 0, 0)');
+        grd.addColorStop(0.2, 'rgb(255, 165, 0)');
+        grd.addColorStop(0.3, 'rgb(255, 255, 0)');
+        grd.addColorStop(0.5, 'rgb(0, 255, 0)');
+        grd.addColorStop(0.7, 'rgb(0, 127, 255)');
+        grd.addColorStop(0.9, 'rgb(0, 0, 255)');
+        grd.addColorStop(1, 'rgb(139, 0, 255)');
+
+        context.scale(.5,.6);
+        context.fillStyle = grd;
+        context.rotate(20*Math.PI/180);
+
+        context.fillRect(100, 20, 400, 400);
+    </script>
+</body>
+
+</html>
